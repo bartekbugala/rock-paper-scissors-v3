@@ -1,12 +1,16 @@
 'use strict'
 const resultDiv = document.getElementById('result');
 const roundsNumber = document.getElementById('rounds-number');
+
 const btnRock = document.getElementById('button-rock');
 const btnPaper = document.getElementById('button-paper');
 const btnScissors = document.getElementById('button-scissors');
+
+const moveButtons = document.getElementsByClassName('player-move');
+
 const btnStart = document.getElementById('button-start');
 const outputDiv = document.getElementById('output');
-const moves = { rock: 'ROCK', paper: 'PAPER', scissors: 'SCISSORS' }
+const moves = { rock: 'rock', paper: 'paper', scissors: 'scissors' }
 const inputStart = document.getElementById('rounds-to-win');
 
 let resultPlayer = 0;
@@ -16,12 +20,27 @@ let gameOver = false;
 let gameOverInfo = false;
 let gameOverMsg = '';
 
+
+function addEventListeners() {
+    for (let i = 0; i < moveButtons.length; i++) {
+        moveButtons[i].addEventListener('click', handleBtnClick(moveButtons[i].getAttribute('data-move')));
+    }
+}
+
+/*
+    E-Duck: This function returns a random value out of three.
+    A computerMoves Object is declared: assigning to 1-3 keys one of 3 values taken from moves object containing strings
+*/
 function randomOf3() {
     let randomNumber = Math.floor((Math.random() * 3) + 1);
     const computerMoves = { 1: moves.rock, 2: moves.paper, 3: moves.scissors };
     return computerMoves[randomNumber];
 }
 
+/*
+    @param playerChoice - String
+    E-Duck: This function returns a message dependign on playerChoice, and outcome of the game
+*/
 function playerMove(playerChoice) {
     if (!gameOver) {
         let resultMessage = checkWinner(playerChoice);
@@ -107,6 +126,7 @@ function handleBtnClick(move) {
         playerMove(move);
     }
 }
+
 function resetGame(roundsToWin,startMessage){
     if(roundsToWin===undefined){
         roundsToWin = '∞';
@@ -119,6 +139,7 @@ function resetGame(roundsToWin,startMessage){
     updateLineMsg(outputDiv, startMessage);
     updateLineMsg(roundsNumber, roundsToWin);
 }
+
 
 btnStart.addEventListener('click', function (event) {
     event.preventDefault();
@@ -142,7 +163,4 @@ btnStart.addEventListener('click', function (event) {
     resetGame(roundsToWin,'New game started. To win the game you need to win '+roundsToWin+' rounds.');
 });
 
-// Figure Buttons
-btnRock.addEventListener('click', handleBtnClick(moves.rock));
-btnPaper.addEventListener('click', handleBtnClick(moves.paper));
-btnScissors.addEventListener('click', handleBtnClick(moves.scissors));
+addEventListeners();
