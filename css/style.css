@@ -351,4 +351,54 @@ section #result span:last-child {
 .output span {
   margin: 0 4px;
 }
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.overlay.show {
+  display: block;
+}
+
+.overlay .modal {
+  display: none;
+  background: #fff;
+  width: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.overlay .modal.show {
+  display: block;
+}
+
+.overlay .modal .close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
+  color: #000;
+  text-decoration: none;
+}
+
+.overlay .modal header {
+  font-size: 20px;
+  line-height: 30px;
+  min-height: 30px;
+  font-weight: bold;
+  padding: 0 30px;
+}
+
+.overlay .modal .content {
+  min-height: 30px;
+  padding: 5px 30px;
+}
 /*# sourceMappingURL=style.css.map */

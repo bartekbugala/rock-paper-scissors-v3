@@ -1,44 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <section class="container">
+      <div class="row">
+        <div class="col-2 col-m-12 score-index">Score:</div>
+        <div class="col-3 col-m-12" id="result">
+          <div><span>0</span> - <span>0</span></div>
+        </div>
+        <div class="col-7 col-m-12 score-index">
+          Rounds to win: <span id="rounds-number">∞</span>
+        </div>
+      </div>
+    </section>
 
     <section class="container">
-        <div class="row">
-            <div class="col-2 col-m-12 score-index">Score:</div>
-            <div class="col-3 col-m-12" id="result"><div><span>0</span> - <span>0</span></div></div>
-            <div class="col-7 col-m-12 score-index">Rounds to win: <span id="rounds-number">∞</span></div>
+      <div>
+        <div
+          role="button"
+          class="btn col-m-12 player-move"
+          id="button-rock"
+          data-move="rock"
+        >
+          Rock
         </div>
-    </section>
-    
-    <section class="container">
-        <div>
-            <div role="button" class="btn col-m-12 player-move" id="button-rock" data-move="rock">Rock</div>
-            <div role="button" class="btn col-m-12 player-move" id="button-paper" data-move="paper">Paper</div>
-            <div role="button" class="btn col-m-12 player-move" id="button-scissors" data-move="scissors">Scissors</div>
+        <div
+          role="button"
+          class="btn col-m-12 player-move"
+          id="button-paper"
+          data-move="paper"
+        >
+          Paper
         </div>
+        <div
+          role="button"
+          class="btn col-m-12 player-move"
+          id="button-scissors"
+          data-move="scissors"
+        >
+          Scissors
+        </div>
+      </div>
     </section>
 
     <section class="container output">
-        <div id="output">PRESS START TO PLAY</div>
+      <div id="output">PRESS START TO PLAY</div>
     </section>
 
     <section class="container">
-        <div>
-            <form>
-                <div>How many rounds to win?<br>(0 = inifite play)</div>
-                <input type="number" id="rounds-to-win" min="0">
-                <div class="col-m-12 btn" id="button-start" role="button">new game</div>
-            </form>      
-        </div>
+      <div>
+        <form>
+          <div>How many rounds to win?<br />(0 = inifite play)</div>
+          <input type="number" id="rounds-to-win" min="0" />
+          <div class="col-m-12 btn" id="button-start" role="button">
+            new game
+          </div>
+        </form>
+      </div>
     </section>
 
+    <div class="overlay" id="modal-overlay">
+      <div class="modal" id="final-modal">
+        <a href="#" class="close">x</a>
+        <header>Game Over!</header>
+        <div class="content">
+        </div>
+      </div>      
+    </div>
+
+    <script src="./js/modals.js"></script>
     <script src="./js/script.js"></script>
-</body>
+  </body>
 </html>

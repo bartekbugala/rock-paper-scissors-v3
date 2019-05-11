@@ -25,6 +25,10 @@ const params = {
 }
 
 const resultDiv = document.getElementById('result');
+
+const finalModalContent = document.querySelector('#modal-one .content');
+const finalModal = document.querySelector('#final-modal');
+
 const roundsNumber = document.getElementById('rounds-number');
 const moveButtons = document.getElementsByClassName('player-move');
 const btnStart = document.getElementById('button-start');
@@ -43,21 +47,31 @@ function randomOf3() {
     return computerMoves[randomNumber];
 }
 
-function playerMove(playerChoice) {
+function checkWinner(playerChoice) {
     if (!params.gameOver) {
-        let resultMessage = checkWinner(playerChoice);
+        let resultMessage = playerMove(playerChoice);
         updateLineMsg(outputDiv, resultMessage);
         updateResultMsg();
     }
     if (params.resultPlayer === params.roundsToWin) {
         params.gameOver = true;
         params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
-        return addLineMsg(outputDiv, params.gameOverMsg);
+
+        document.querySelector('#modal-overlay').classList.add('show');
+        finalModal.classList.add('show');
+        finalModalContent.innerHTML = params.gameOverMsg;
+
+        return;
     }
     if (params.resultComputer === params.roundsToWin) {
         params.gameOver = true;
         params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
-        return addLineMsg(outputDiv, params.gameOverMsg);
+
+        document.querySelector('#modal-overlay').classList.add('show');
+        finalModal.classList.add('show');
+        finalModalContent.innerHTML = params.gameOverMsg;
+
+        return;
     }
     return;
 }
@@ -81,7 +95,7 @@ function singleWinMsg(playerChoice, computerChoice, wonLostMsg) {
     return wonLostMsg + params.youPlayedMsg + wrapWithSpan(playerChoice) + params.computerPlayedMsg + wrapWithSpan(computerChoice);
 }
 
-function checkWinner(playerChoice) {
+function playerMove(playerChoice) {
     let computerChoice = randomOf3();
 
     let winMsg = wrapWithSpan(params.youWonMsg, 'player');
@@ -124,14 +138,13 @@ function handleBtnClick(move) {
             gameOverMessageOnButton();
             return;
         }
-        playerMove(move);
+        checkWinner(move);
     }
 }
 
-function resetGame(roundsToWin, startMessage) {
-    if (roundsToWin === undefined) {
-        // Not params.roundsToWin!
-        roundsToWin = '∞';
+function resetGame(displayedRoundsToWin, startMessage) {
+    if (displayedRoundsToWin === undefined) {
+        displayedRoundsToWin = '∞';
     }
     params.resultPlayer = 0;
     params.resultComputer = 0;
@@ -139,7 +152,7 @@ function resetGame(roundsToWin, startMessage) {
     params.gameOverInfo = false;
     updateResultMsg();
     updateLineMsg(outputDiv, startMessage);
-    updateLineMsg(roundsNumber, roundsToWin);
+    updateLineMsg(roundsNumber, displayedRoundsToWin);
 }
 
 btnStart.addEventListener('click', function (event) {
