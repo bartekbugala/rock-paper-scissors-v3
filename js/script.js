@@ -142,7 +142,6 @@ function resetGame(roundsToWin, startMessage) {
     updateLineMsg(roundsNumber, roundsToWin);
 }
 
-
 btnStart.addEventListener('click', function (event) {
     event.preventDefault();
     params.roundsToWin = parseInt(inputStart.value);
@@ -165,4 +164,15 @@ btnStart.addEventListener('click', function (event) {
     resetGame(params.roundsToWin, params.newGameMsg + params.roundsToWin + ' rounds.');
 });
 
+// Enter = btnStart
+inputStart.addEventListener('keydown', function(event) {
+    // Code 13 = Enter
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      btnStart.click();
+    }
+}); 
+
 addEventListeners();
+
+
