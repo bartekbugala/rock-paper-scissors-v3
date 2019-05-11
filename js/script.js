@@ -1,25 +1,35 @@
 'use strict'
+const params = {
+    resultPlayer: 0,
+    resultComputer: 0,
+    roundsToWin: undefined,
+    gameOver: false,
+    gameOverInfo: false,
+    gameOverMsg: '',
+    youWonMsg: 'YOU WON!',
+    youLostMsg: 'YOU LOST',
+    tieMsg: 'TIE!',
+    youPlayedMsg:'You played: ',
+    computerPlayedMsg:', Computer played: ',
+    playerWinMsg: 'YOU WON THE ENTIRE GAME!',
+    computerWinMsg: 'COMPUTER WON THE ENTIRE GAME!',
+    infiniteStartMsg: 'Game Started. Infinite play.',
+    wrongInputMsg: 'Wrong input, please enter a positive number.<br><br>Infinite play.',
+    newGameMsg: 'New game started. To win the game you need to win ',
+    gameOverOnBtnMsg: 'Game over, please press the New Game button!',
+    moves: {
+        rock: 'rock',
+        paper: 'paper',
+        scissors: 'scissors'
+    }
+}
+
 const resultDiv = document.getElementById('result');
 const roundsNumber = document.getElementById('rounds-number');
-
-const btnRock = document.getElementById('button-rock');
-const btnPaper = document.getElementById('button-paper');
-const btnScissors = document.getElementById('button-scissors');
-
 const moveButtons = document.getElementsByClassName('player-move');
-
 const btnStart = document.getElementById('button-start');
 const outputDiv = document.getElementById('output');
-const moves = { rock: 'rock', paper: 'paper', scissors: 'scissors' }
 const inputStart = document.getElementById('rounds-to-win');
-
-let resultPlayer = 0;
-let resultComputer = 0;
-let roundsToWin;
-let gameOver = false;
-let gameOverInfo = false;
-let gameOverMsg = '';
-
 
 function addEventListeners() {
     for (let i = 0; i < moveButtons.length; i++) {
@@ -27,35 +37,27 @@ function addEventListeners() {
     }
 }
 
-/*
-    E-Duck: This function returns a random value out of three.
-    A computerMoves Object is declared: assigning to 1-3 keys one of 3 values taken from moves object containing strings
-*/
 function randomOf3() {
     let randomNumber = Math.floor((Math.random() * 3) + 1);
-    const computerMoves = { 1: moves.rock, 2: moves.paper, 3: moves.scissors };
+    const computerMoves = { 1: params.moves.rock, 2: params.moves.paper, 3: params.moves.scissors };
     return computerMoves[randomNumber];
 }
 
-/*
-    @param playerChoice - String
-    E-Duck: This function returns a message dependign on playerChoice, and outcome of the game
-*/
 function playerMove(playerChoice) {
-    if (!gameOver) {
+    if (!params.gameOver) {
         let resultMessage = checkWinner(playerChoice);
         updateLineMsg(outputDiv, resultMessage);
         updateResultMsg();
     }
-    if (resultPlayer === roundsToWin) {
-        gameOver = true;
-        gameOverMsg = wrapWithSpan('YOU WON THE ENTIRE GAME!', 'player');
-        return addLineMsg(outputDiv, gameOverMsg);
+    if (params.resultPlayer === params.roundsToWin) {
+        params.gameOver = true;
+        params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
+        return addLineMsg(outputDiv, params.gameOverMsg);
     }
-    if (resultComputer === roundsToWin) {
-        gameOver = true;
-        gameOverMsg = wrapWithSpan('COMPUTER WON THE ENTIRE GAME!', 'computer');
-        return addLineMsg(outputDiv, gameOverMsg);
+    if (params.resultComputer === params.roundsToWin) {
+        params.gameOver = true;
+        params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
+        return addLineMsg(outputDiv, params.gameOverMsg);
     }
     return;
 }
@@ -76,23 +78,23 @@ function wrapWithSpan(textInsideSpan, spanID) {
 }
 
 function singleWinMsg(playerChoice, computerChoice, wonLostMsg) {
-    return wonLostMsg + 'You played: ' + wrapWithSpan(playerChoice) + ', Computer played: ' + wrapWithSpan(computerChoice);
+    return wonLostMsg + params.youPlayedMsg + wrapWithSpan(playerChoice) + params.computerPlayedMsg + wrapWithSpan(computerChoice);
 }
 
 function checkWinner(playerChoice) {
     let computerChoice = randomOf3();
 
-    let winMsg = wrapWithSpan('YOU WON!', 'player');
-    let looseMsg = wrapWithSpan('YOU LOST', 'computer');
-    let tieMsg = wrapWithSpan('TIE!', false);
+    let winMsg = wrapWithSpan(params.youWonMsg, 'player');
+    let looseMsg = wrapWithSpan(params.youLostMsg, 'computer');
+    let tieMsg = wrapWithSpan(params.tieMsg, false);
 
     if (playerChoice === computerChoice) {
         return singleWinMsg(playerChoice, computerChoice, tieMsg);
-    } else if ((playerChoice === moves.rock && computerChoice === moves.paper) || (playerChoice === moves.scissors && computerChoice === moves.rock) || (playerChoice === moves.paper && computerChoice === moves.scissors)) {
-        resultComputer++;
+    } else if ((playerChoice === params.moves.rock && computerChoice === params.moves.paper) || (playerChoice === params.moves.scissors && computerChoice === params.moves.rock) || (playerChoice === params.moves.paper && computerChoice === params.moves.scissors)) {
+        params.resultComputer++;
         return singleWinMsg(playerChoice, computerChoice, looseMsg);
     }
-    resultPlayer++;
+    params.resultPlayer++;
     return singleWinMsg(playerChoice, computerChoice, winMsg);
 }
 
@@ -105,21 +107,20 @@ function addLineMsg(domElement, textToDisplay) {
 }
 
 function updateResultMsg() {
-    resultDiv.innerHTML = '<span>' + resultPlayer + '</span>' + ' - ' + '<span>' + resultComputer + '</span>';
+    resultDiv.innerHTML = '<span>' + params.resultPlayer + '</span>' + ' - ' + '<span>' + params.resultComputer + '</span>';
 }
 
 function gameOverMessageOnButton() {
-    if (gameOverInfo === true) {
+    if (params.gameOverInfo === true) {
         return;
     }
-    gameOverInfo = true;
-    let msg = 'Game over, please press the New Game button!';
-    addLineMsg(outputDiv, msg);
+    params.gameOverInfo = true;
+    addLineMsg(outputDiv, params.gameOverOnBtnMsg);
 }
 
 function handleBtnClick(move) {
     return function () {
-        if (gameOver) {
+        if (params.gameOver) {
             gameOverMessageOnButton();
             return;
         }
@@ -127,14 +128,15 @@ function handleBtnClick(move) {
     }
 }
 
-function resetGame(roundsToWin,startMessage){
-    if(roundsToWin===undefined){
+function resetGame(roundsToWin, startMessage) {
+    if (roundsToWin === undefined) {
+        // Not params.roundsToWin!
         roundsToWin = '∞';
     }
-    resultPlayer = 0;
-    resultComputer = 0;
-    gameOver = false;
-    gameOverInfo = false;
+    params.resultPlayer = 0;
+    params.resultComputer = 0;
+    params.gameOver = false;
+    params.gameOverInfo = false;
     updateResultMsg();
     updateLineMsg(outputDiv, startMessage);
     updateLineMsg(roundsNumber, roundsToWin);
@@ -143,24 +145,24 @@ function resetGame(roundsToWin,startMessage){
 
 btnStart.addEventListener('click', function (event) {
     event.preventDefault();
-    roundsToWin = parseInt(inputStart.value);
-    inputStart.value = roundsToWin;
-    if (roundsToWin === null) {
+    params.roundsToWin = parseInt(inputStart.value);
+    inputStart.value = params.roundsToWin;
+    if (params.roundsToWin === null) {
         return;
     }
-    roundsToWin = parseInt(roundsToWin);
-    if (isNaN(roundsToWin) || roundsToWin < 0) {
-        roundsToWin = undefined;
-        
-        resetGame(roundsToWin,'Wrong input, please enter a positive number.<br><br>Infinite play.');
-        return;       
-    }
-    if (roundsToWin === 0) {
-        roundsToWin = undefined;
-        resetGame(roundsToWin,'Game Started. Infinite play.');
+    params.roundsToWin = parseInt(params.roundsToWin);
+    if (isNaN(params.roundsToWin) || params.roundsToWin < 0) {
+        params.roundsToWin = undefined;
+
+        resetGame(params.roundsToWin, params.wrongInputMsg);
         return;
     }
-    resetGame(roundsToWin,'New game started. To win the game you need to win '+roundsToWin+' rounds.');
+    if (params.roundsToWin === 0) {
+        params.roundsToWin = undefined;
+        resetGame(params.roundsToWin, params.infiniteStartMsg);
+        return;
+    }
+    resetGame(params.roundsToWin, params.newGameMsg + params.roundsToWin + ' rounds.');
 });
 
 addEventListeners();
