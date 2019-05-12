@@ -66,12 +66,21 @@
     </section>
 
     <div class="overlay" id="modal-overlay">
+
       <div class="modal" id="final-modal">
         <a href="#" class="close">x</a>
-        <header>Game Over!</header>
-        <div class="content">
+        <div class="content"></div>
+      </div>
+
+      <div class="modal" id="rounds-modal">
+        <a href="#" class="close">x</a>
+        <div>How many rounds to win?<br />(0 = inifite play)</div>
+        <input type="number" id="rounds-to-win" min="0" />
+        <div class="col-m-12 btn" id="button-start" role="button">
+          new game
         </div>
-      </div>      
+      </div>
+      
     </div>
 
     <script src="./js/modals.js"></script>
