@@ -129,7 +129,7 @@ function playerMove(playerChoice) {
         return singleWinMsg(playerChoice, computerChoice, looseMsg);
     }
     params.scorePlayer++;
-    addGameScoreEntry(params.playerName);
+    addGameScoreEntry(playerChoice, computerChoice, params.playerName);
     return singleWinMsg(playerChoice, computerChoice, winMsg);
 }
 
