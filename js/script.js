@@ -97,8 +97,13 @@ function showFinalModal () {
 }
 function wrapWithSpan(textInsideSpan, spanID) {
     let spanExpression;
-    if (spanID === false || spanID === undefined) {
+    if (spanID === false) {
         spanExpression = '<span>' + textInsideSpan + '</span>';
+        return spanExpression;
+    }
+    if (spanID === undefined) {
+        spanID = textInsideSpan.toLowerCase()
+        spanExpression = '<span id="' + spanID + '">' + textInsideSpan + '</span>';
         return spanExpression;
     }
     return spanExpression = '<span id="' + spanID + '">' + textInsideSpan + '</span>';
@@ -191,8 +196,7 @@ btnStart.addEventListener('click', function (event) {
     }
     params.roundsToWin = parseInt(params.roundsToWin);
     if (isNaN(params.roundsToWin) || params.roundsToWin < 0) {
-        params.roundsToWin = undefined;
-
+        params.roundsToWin = undefined; 
         resetGame(params.roundsToWin, params.wrongInputMsg);
         return;
     }
