@@ -1,18 +1,21 @@
 'use strict'
 const params = {
-    resultPlayer: 0,
-    resultComputer: 0,
-    roundsToWin: undefined,
+    scorePlayer: 0,
+    scoreComputer: 0,
+    roundCounter: 0,
+    roundsToWin: 0,
     gameOver: false,
     gameOverInfo: false,
     gameOverMsg: '',
-    youWonMsg: 'YOU WON!',
-    youLostMsg: 'YOU LOST',
+    youWonMsg: 'YOU WON THIS ROUND!',
+    youLostMsg: 'YOU LOST THIS ROUND',
+    playerName: 'Player',
+    computerName: 'Computer',
     tieMsg: 'TIE!',
-    youPlayedMsg:'You played: ',
-    computerPlayedMsg:', Computer played: ',
-    playerWinMsg: 'YOU WON THE ENTIRE GAME!',
-    computerWinMsg: 'COMPUTER WON THE ENTIRE GAME!',
+    youPlayedMsg: 'You played: ',
+    computerPlayedMsg: ', Computer played: ',
+    playerWinMsg: 'YOU WON THE GAME!',
+    computerWinMsg: 'COMPUTER WON THE GAME!',
     infiniteStartMsg: 'Game Started. Infinite play.',
     wrongInputMsg: 'Wrong input, please enter a positive number.<br><br>Infinite play.',
     newGameMsg: 'New game started. To win the game you need to win ',
@@ -21,19 +24,31 @@ const params = {
         rock: 'rock',
         paper: 'paper',
         scissors: 'scissors'
+    },
+    progress: [{
+        'test': 'test2'
+    }],
+    progressCollumnNames: {
+        'roundsPlayed': 'Rounds Played',
+        'playerMove': 'Player Move',
+        'computerMove': 'Computer Move',
+        'roundWinner': 'Round Winner',
+        'currentScore': 'Score',
     }
 }
 
 const resultDiv = document.getElementById('result');
 
-const finalModalContent = document.querySelector('#modal-one .content');
-const finalModal = document.querySelector('#final-modal');
+const modalOverlay = document.querySelector('#modal-overlay');
+const finalModalContent = document.querySelector('#modal-final .content');
+const finalModal = document.querySelector('#modal-final');
 
 const roundsNumber = document.getElementById('rounds-number');
 const moveButtons = document.getElementsByClassName('player-move');
 const btnStart = document.getElementById('button-start');
 const outputDiv = document.getElementById('output');
 const inputStart = document.getElementById('rounds-to-win');
+
 
 function addEventListeners() {
     for (let i = 0; i < moveButtons.length; i++) {
@@ -53,23 +68,25 @@ function checkWinner(playerChoice) {
         updateLineMsg(outputDiv, resultMessage);
         updateResultMsg();
     }
-    if (params.resultPlayer === params.roundsToWin) {
+    if (params.scorePlayer === params.roundsToWin && params.roundsToWin !== 0) {
         params.gameOver = true;
         params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
 
-        document.querySelector('#modal-overlay').classList.add('show');
+        modalOverlay.classList.add('show');
         finalModal.classList.add('show');
         finalModalContent.innerHTML = params.gameOverMsg;
+        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
 
         return;
     }
-    if (params.resultComputer === params.roundsToWin) {
+    if (params.scoreComputer === params.roundsToWin && params.roundsToWin !== 0) {
         params.gameOver = true;
         params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
 
-        document.querySelector('#modal-overlay').classList.add('show');
+        modalOverlay.classList.add('show');
         finalModal.classList.add('show');
         finalModalContent.innerHTML = params.gameOverMsg;
+        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
 
         return;
     }
@@ -102,14 +119,28 @@ function playerMove(playerChoice) {
     let looseMsg = wrapWithSpan(params.youLostMsg, 'computer');
     let tieMsg = wrapWithSpan(params.tieMsg, false);
 
+    params.roundCounter++;
     if (playerChoice === computerChoice) {
+        addGameScoreEntry(playerChoice, computerChoice, params.tieMsg)
         return singleWinMsg(playerChoice, computerChoice, tieMsg);
     } else if ((playerChoice === params.moves.rock && computerChoice === params.moves.paper) || (playerChoice === params.moves.scissors && computerChoice === params.moves.rock) || (playerChoice === params.moves.paper && computerChoice === params.moves.scissors)) {
-        params.resultComputer++;
+        params.scoreComputer++;
+        addGameScoreEntry(playerChoice, computerChoice, params.computerName);
         return singleWinMsg(playerChoice, computerChoice, looseMsg);
     }
-    params.resultPlayer++;
+    params.scorePlayer++;
+    addGameScoreEntry(params.playerName);
     return singleWinMsg(playerChoice, computerChoice, winMsg);
+}
+
+function addGameScoreEntry(playerChoice, computerChoice, winner) {
+    return params.progress[params.roundCounter - 1] = {
+        [params.progressCollumnNames.roundsPlayed]: params.roundCounter,
+        [params.progressCollumnNames.playerMove]: playerChoice,
+        [params.progressCollumnNames.computerMove]: computerChoice,
+        [params.progressCollumnNames.roundWinner]: winner,
+        [params.progressCollumnNames.currentScore]: params.scorePlayer + ' - ' + params.scoreComputer
+    };
 }
 
 function updateLineMsg(domElement, textToDisplay) {
@@ -121,7 +152,7 @@ function addLineMsg(domElement, textToDisplay) {
 }
 
 function updateResultMsg() {
-    resultDiv.innerHTML = '<span>' + params.resultPlayer + '</span>' + ' - ' + '<span>' + params.resultComputer + '</span>';
+    resultDiv.innerHTML = '<span>' + params.scorePlayer + '</span>' + ' - ' + '<span>' + params.scoreComputer + '</span>';
 }
 
 function gameOverMessageOnButton() {
@@ -146,8 +177,8 @@ function resetGame(displayedRoundsToWin, startMessage) {
     if (displayedRoundsToWin === undefined) {
         displayedRoundsToWin = '∞';
     }
-    params.resultPlayer = 0;
-    params.resultComputer = 0;
+    params.scorePlayer = 0;
+    params.scoreComputer = 0;
     params.gameOver = false;
     params.gameOverInfo = false;
     updateResultMsg();
@@ -178,13 +209,13 @@ btnStart.addEventListener('click', function (event) {
 });
 
 // Enter = btnStart
-inputStart.addEventListener('keydown', function(event) {
+inputStart.addEventListener('keydown', function (event) {
     // Code 13 = Enter
     if (event.keyCode === 13) {
-      event.preventDefault();
-      btnStart.click();
+        event.preventDefault();
+        btnStart.click();
     }
-}); 
+});
 
 addEventListeners();
 

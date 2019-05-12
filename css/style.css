@@ -369,11 +369,13 @@ section #result span:last-child {
 .overlay .modal {
   display: none;
   background: #fff;
-  width: 200px;
+  min-width: 400px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
+  border-radius: 10px;
+  padding: 10px 5px 20px;
 }
 
 .overlay .modal.show {
@@ -400,5 +402,23 @@ section #result span:last-child {
 .overlay .modal .content {
   min-height: 30px;
   padding: 5px 30px;
+}
+
+.overlay .modal .content table, .overlay .modal .content td, .overlay .modal .content th {
+  border: solid 1px #555;
+}
+
+.overlay .modal .content .table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.overlay .modal .content table {
+  overflow-y: auto;
+  border-collapse: collapse;
+}
+
+.overlay .modal .content table td, .overlay .modal .content table th {
+  padding: 5px;
 }
 /*# sourceMappingURL=style.css.map */

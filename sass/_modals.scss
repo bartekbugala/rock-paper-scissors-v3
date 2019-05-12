@@ -13,11 +13,13 @@
     .modal {
         display: none;
         background: #fff;
-        width: 200px;
+        min-width: 400px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate3d(-50%, -50%, 0);
+        border-radius: 10px;
+        padding: 10px 5px 20px;
     
         &.show {
             display: block;
@@ -43,6 +45,23 @@
         .content {
             min-height: 30px;
             padding: 5px 30px;
+            table, td, th {
+                border: solid 1px $color4;
+                
+            };
+            .table-wrapper {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+            table {
+                
+                overflow-y: auto;
+                border-collapse: collapse;
+                td, th {
+                    padding: 5px;
+                }
+                
+            }
         }
     }
 }
