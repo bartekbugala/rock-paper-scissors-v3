@@ -25,9 +25,7 @@ const params = {
         paper: 'paper',
         scissors: 'scissors'
     },
-    progress: [{
-        'test': 'test2'
-    }],
+    progress: [],
     progressCollumnNames: {
         'roundsPlayed': 'Rounds Played',
         'playerMove': 'Player Move',
@@ -68,44 +66,42 @@ function checkWinner(playerChoice) {
         updateLineMsg(outputDiv, resultMessage);
         updateResultMsg();
     }
-    if (params.scorePlayer === params.roundsToWin && params.roundsToWin !== 0) {
-        params.gameOver = true;
-        params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
-
-        modalOverlay.classList.add('show');
-        finalModal.classList.add('show');
-        finalModalContent.innerHTML = params.gameOverMsg;
-        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
-
+    if (params.roundsToWin === 0) {
         return;
     }
-    if (params.scoreComputer === params.roundsToWin && params.roundsToWin !== 0) {
-        params.gameOver = true;
-        params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
-
-        modalOverlay.classList.add('show');
-        finalModal.classList.add('show');
-        finalModalContent.innerHTML = params.gameOverMsg;
-        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
-
-        return;
-    }
+    showGameOverMessage();
     return;
 }
 
+function showGameOverMessage() {
+    
+    if (params.scorePlayer === params.roundsToWin) {
+        params.gameOver = true;
+        params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
+        showFinalModal();    
+        return;
+    }
+    if (params.scoreComputer === params.roundsToWin) {
+        params.gameOver = true;
+        params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
+        showFinalModal();
+        return;
+    }
+}
+
+function showFinalModal () {
+    modalOverlay.classList.add('show');
+        finalModal.classList.add('show');
+        finalModalContent.innerHTML = params.gameOverMsg;
+        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
+}
 function wrapWithSpan(textInsideSpan, spanID) {
     let spanExpression;
-    if (spanID === false) {
+    if (spanID === false || spanID === undefined) {
         spanExpression = '<span>' + textInsideSpan + '</span>';
         return spanExpression;
     }
-    if (spanID === undefined) {
-        spanID = textInsideSpan.toLowerCase()
-        spanExpression = '<span id="' + spanID + '">' + textInsideSpan + '</span>';
-        return spanExpression;
-    }
-    spanExpression = '<span id="' + spanID + '">' + textInsideSpan + '</span>';
-    return spanExpression;
+    return spanExpression = '<span id="' + spanID + '">' + textInsideSpan + '</span>';
 }
 
 function singleWinMsg(playerChoice, computerChoice, wonLostMsg) {
@@ -134,13 +130,13 @@ function playerMove(playerChoice) {
 }
 
 function addGameScoreEntry(playerChoice, computerChoice, winner) {
-    return params.progress[params.roundCounter - 1] = {
+    return params.progress.push({
         [params.progressCollumnNames.roundsPlayed]: params.roundCounter,
         [params.progressCollumnNames.playerMove]: playerChoice,
         [params.progressCollumnNames.computerMove]: computerChoice,
         [params.progressCollumnNames.roundWinner]: winner,
         [params.progressCollumnNames.currentScore]: params.scorePlayer + ' - ' + params.scoreComputer
-    };
+    });
 }
 
 function updateLineMsg(domElement, textToDisplay) {
