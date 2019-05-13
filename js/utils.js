@@ -1,3 +1,4 @@
+'use strict';
 function generateGameScoreTable(scoreArray,columnNamesObject) {
     let htmlString = '<table><thead><tr>'+generateColumnNames(columnNamesObject)+'</tr></thead><tbody>';
     for (let i = 0; i < scoreArray.length; i++) {
