@@ -1,28 +1,25 @@
 'use strict';
 (function () {
 
-   const modals = document.querySelectorAll('.modal');
+    const modals = document.querySelectorAll('.modal');
 
     const showModal = function (event) {
         event.preventDefault();
-        for (let i = 0; i < modalLinks.length; i++) {
-            modals[i].classList.remove('show');
-        }
         document.querySelector('#modal-overlay').classList.add('show');
-        document.querySelector(this.getAttribute('href')).classList.add('show');
+        document.querySelector('#modal-input').classList.add('show');
     };
 
-    const modalLinks = document.querySelectorAll('.show-modal');
-
-    for (let i = 0; i < modalLinks.length; i++) {
-        modalLinks[i].addEventListener('click', showModal);
-
-    }
+    btnNewGame.addEventListener('click', showModal);
 
     const hideModal = function (event) {
         event.preventDefault();
         document.querySelector('#modal-overlay').classList.remove('show');
+        for (let i = 0; i < modals.length; i++) {
+            modals[i].classList.remove('show');
+        }
     };
+
+    btnStart.addEventListener('click', hideModal);
 
     const closeButtons = document.querySelectorAll('.modal .close');
 

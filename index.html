@@ -55,37 +55,39 @@
 
     <section class="container">
       <div>
-        <form>
-          <div>How many rounds to win?<br />(0 = inifite play)</div>
-          <input type="number" id="rounds-to-win" min="0" />
-          <div class="col-m-12 btn" id="button-start" role="button">
-            new game
-          </div>
-        </form>
+        <div class="col-m-12 btn" id="button-new-game" role="button">
+          New game
+        </div>
       </div>
     </section>
 
-    <div class="overlay" id="modal-overlay">
-
+    <div class="overlay " id="modal-overlay">
       <div class="modal" id="modal-final">
         <a href="#" class="close">x</a>
         <div class="content"></div>
       </div>
 
-      
-      <!-- Kod przygotowany do rozszerzeonej funkcjonalności.
-        
-        <div class="modal" id="modal-input">
+      <div class="modal show" id="modal-input">
         <a href="#" class="close">x</a>
-        <div>How many rounds to win?<br />(0 = inifite play)</div>
-        <input type="number" id="_rounds-to-win" min="0" />
-        <div class="col-m-12 btn" id="_button-start" role="button">
-          new game
-        </div>
-      </div>-->
-
+        <form>
+          <div>
+            <div>Enter Your Name:</div>
+            <input type="text" id="player-name" />
+          </div>
+          <div>
+            <div>How many rounds to win?<br />(0 = inifite play)</div>
+          </div>
+          <div>
+            <input type="number" id="rounds-to-win" min="0" />
+          </div>
+          <div>
+            <div class="col-m-12 btn" id="button-start" role="button">
+              Start
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-
 
     <script src="./js/script.js"></script>
     <script src="./js/modals.js"></script>

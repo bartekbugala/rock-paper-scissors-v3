@@ -7,15 +7,15 @@ const params = {
     gameOver: false,
     gameOverInfo: false,
     gameOverMsg: '',
-    youWonMsg: 'YOU WON THIS ROUND!',
-    youLostMsg: 'YOU LOST THIS ROUND',
+    youWonMsg: ' won this round!',
+    youLostMsg: ' won this round!',
     playerName: 'Player',
     computerName: 'Computer',
-    tieMsg: 'TIE!',
-    youPlayedMsg: 'You played: ',
-    computerPlayedMsg: ', Computer played: ',
-    playerWinMsg: 'YOU WON THE GAME!',
-    computerWinMsg: 'COMPUTER WON THE GAME!',
+    tieMsg: 'It\'s a tie!',
+    youPlayedMsg: ' played: ',
+    computerPlayedMsg: ' played: ',
+    playerWinMsg: ' won the game!',
+    computerWinMsg: ' won the game!',
     infiniteStartMsg: 'Game Started. Infinite play.',
     wrongInputMsg: 'Wrong input, please enter a positive number.<br><br>Infinite play.',
     newGameMsg: 'New game started. To win the game you need to win ',
@@ -25,14 +25,14 @@ const params = {
         paper: 'paper',
         scissors: 'scissors'
     },
-    progress: [],
-    progressCollumnNames: {
-        'roundsPlayed': 'Rounds Played',
-        'playerMove': 'Player Move',
-        'computerMove': 'Computer Move',
-        'roundWinner': 'Round Winner',
-        'currentScore': 'Score',
-    }
+    progress: []
+}
+let progressCollumnNames = {
+    roundsPlayed: 'Rounds Played',
+    playerMove: 'Player Move',
+    computerMove: 'Computer Move',
+    roundWinner: 'Round Winner',
+    currentScore: 'Score',
 }
 
 const resultDiv = document.getElementById('result');
@@ -40,12 +40,16 @@ const resultDiv = document.getElementById('result');
 const modalOverlay = document.querySelector('#modal-overlay');
 const finalModalContent = document.querySelector('#modal-final .content');
 const finalModal = document.querySelector('#modal-final');
+const inputModal = document.querySelector('#modal-input');
 
 const roundsNumber = document.getElementById('rounds-number');
 const moveButtons = document.getElementsByClassName('player-move');
+const btnNewGame = document.getElementById('button-new-game');
 const btnStart = document.getElementById('button-start');
 const outputDiv = document.getElementById('output');
 const inputStart = document.getElementById('rounds-to-win');
+const inputPlayerName = document.getElementById('player-name');
+
 
 
 function addEventListeners() {
@@ -74,27 +78,28 @@ function checkWinner(playerChoice) {
 }
 
 function showGameOverMessage() {
-    
+
     if (params.scorePlayer === params.roundsToWin) {
         params.gameOver = true;
-        params.gameOverMsg = wrapWithSpan(params.playerWinMsg, 'player');
-        showFinalModal();    
+        params.gameOverMsg = wrapWithSpan(params.playerName + params.playerWinMsg, 'player');
+        showFinalModal();
         return;
     }
     if (params.scoreComputer === params.roundsToWin) {
         params.gameOver = true;
-        params.gameOverMsg = wrapWithSpan(params.computerWinMsg, 'computer');
+        params.gameOverMsg = wrapWithSpan(params.playerName + params.computerWinMsg, 'computer');
         showFinalModal();
         return;
     }
 }
 
-function showFinalModal () {
+function showFinalModal() {
     modalOverlay.classList.add('show');
-        finalModal.classList.add('show');
-        finalModalContent.innerHTML = params.gameOverMsg;
-        finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, params.progressCollumnNames) + '</div>';
+    finalModal.classList.add('show');
+    finalModalContent.innerHTML = params.gameOverMsg;
+    finalModalContent.innerHTML += '<div class="table-wrapper">' + generateGameScoreTable(params.progress, progressCollumnNames) + '</div>';
 }
+
 function wrapWithSpan(textInsideSpan, spanID) {
     let spanExpression;
     if (spanID === false) {
@@ -110,14 +115,14 @@ function wrapWithSpan(textInsideSpan, spanID) {
 }
 
 function singleWinMsg(playerChoice, computerChoice, wonLostMsg) {
-    return wonLostMsg + params.youPlayedMsg + wrapWithSpan(playerChoice) + params.computerPlayedMsg + wrapWithSpan(computerChoice);
+    return params.playerName + params.youPlayedMsg + wrapWithSpan(playerChoice) + ' ' + params.computerName + params.computerPlayedMsg + wrapWithSpan(computerChoice) + '<br>' + wonLostMsg;
 }
 
 function playerMove(playerChoice) {
     let computerChoice = randomOf3();
 
-    let winMsg = wrapWithSpan(params.youWonMsg, 'player');
-    let looseMsg = wrapWithSpan(params.youLostMsg, 'computer');
+    let winMsg = wrapWithSpan(params.playerName + params.youWonMsg, 'player');
+    let looseMsg = wrapWithSpan(params.playerName + params.youLostMsg, 'computer');
     let tieMsg = wrapWithSpan(params.tieMsg, false);
 
     params.roundCounter++;
@@ -136,11 +141,11 @@ function playerMove(playerChoice) {
 
 function addGameScoreEntry(playerChoice, computerChoice, winner) {
     return params.progress.push({
-        [params.progressCollumnNames.roundsPlayed]: params.roundCounter,
-        [params.progressCollumnNames.playerMove]: playerChoice,
-        [params.progressCollumnNames.computerMove]: computerChoice,
-        [params.progressCollumnNames.roundWinner]: winner,
-        [params.progressCollumnNames.currentScore]: params.scorePlayer + ' - ' + params.scoreComputer
+        [progressCollumnNames.roundsPlayed]: params.roundCounter,
+        [progressCollumnNames.playerMove]: playerChoice,
+        [progressCollumnNames.computerMove]: computerChoice,
+        [progressCollumnNames.roundWinner]: winner,
+        [progressCollumnNames.currentScore]: params.scorePlayer + ' - ' + params.scoreComputer
     });
 }
 
@@ -189,14 +194,16 @@ function resetGame(displayedRoundsToWin, startMessage) {
 
 btnStart.addEventListener('click', function (event) {
     event.preventDefault();
+    params.playerName = inputPlayerName.value || 'Player';
+    progressCollumnNames.playerMove = params.playerName + '\'s Move';
+    progressCollumnNames.computerMove = params.computerName + '\'s Move';
     params.roundsToWin = parseInt(inputStart.value);
-    inputStart.value = params.roundsToWin;
     if (params.roundsToWin === null) {
         return;
     }
     params.roundsToWin = parseInt(params.roundsToWin);
     if (isNaN(params.roundsToWin) || params.roundsToWin < 0) {
-        params.roundsToWin = undefined; 
+        params.roundsToWin = undefined;
         resetGame(params.roundsToWin, params.wrongInputMsg);
         return;
     }

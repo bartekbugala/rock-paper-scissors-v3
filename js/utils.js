@@ -1,8 +1,8 @@
 'use strict';
-function generateGameScoreTable(scoreArray,columnNamesObject) {
-    let htmlString = '<table><thead><tr>'+generateColumnNames(columnNamesObject)+'</tr></thead><tbody>';
+function generateGameScoreTable(scoreArray, columnNamesObject) {
+    let htmlString = '<table><thead><tr>' + generateColumnNames(columnNamesObject) + '</tr></thead><tbody>';
     for (let i = 0; i < scoreArray.length; i++) {
-        htmlString += '<tr>'+generateGameScoreRowContent(scoreArray[i])+'</tr>'
+        htmlString += '<tr>' + generateGameScoreRowContent(scoreArray[i]) + '</tr>'
     }
     htmlString += '</tbody></table>';
     return htmlString;
