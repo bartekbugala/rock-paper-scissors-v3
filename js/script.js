@@ -15,7 +15,7 @@ const params = {
     youPlayedMsg: ' played: ',
     computerPlayedMsg: ' played: ',
     playerWinMsg: ' won the game!',
-    computerWinMsg: ' won the game!',
+    computerWinMsg: ' lost the game!',
     infiniteStartMsg: 'Game Started. Infinite play.',
     wrongInputMsg: 'Wrong input, please enter a positive number.<br><br>Infinite play.',
     newGameMsg: 'New game started. To win the game you need to win ',
