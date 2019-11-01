@@ -8,7 +8,7 @@ const params = {
     gameOverInfo: false,
     gameOverMsg: '',
     youWonMsg: ' won this round!',
-    youLostMsg: ' won this round!',
+    youLostMsg: ' lost this round!',
     playerName: 'Player',
     computerName: 'Computer',
     tieMsg: 'It\'s a tie!',
